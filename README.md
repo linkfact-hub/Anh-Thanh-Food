@@ -1,22 +1,31 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Tiệm Anh Thanh - PAT FOOD (Anh-Thanh-Food)
 
-# Run and deploy your AI Studio app
+Trang web đặt món & quản lý thực đơn trực tuyến cho Tiệm Anh Thanh - PAT FOOD.
 
-This contains everything you need to run your app locally.
+## 🚀 Live Demo
+- GitHub Pages: [https://linkfact-hub.github.io/Anh-Thanh-Food/](https://linkfact-hub.github.io/Anh-Thanh-Food/)
 
-View your app in AI Studio: https://ai.studio/apps/2fdf4eeb-191e-4b6b-b66f-7e67ed3bbde0
+## 🛠️ Cài đặt & Chạy cục bộ (Local Development)
 
-## Run Locally
+**Yêu cầu:** Node.js (v18+)
 
-**Prerequisites:**  Node.js
+1. Cài đặt dependencies:
+   ```bash
+   npm install
+   ```
+2. Cấu hình biến môi trường:
+   Sao chép `.env.example` thành `.env.local` và điền các thông tin nếu cần.
+3. Khởi động dev server:
+   ```bash
+   npm run dev
+   ```
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-"# cut-quay-viet" 
-"# pat-milk-v2" 
+## 📦 Build & Triển khai (Deploy)
+- Build dự án:
+  ```bash
+  npm run build
+  ```
+- Triển khai lên GitHub Pages:
+  ```bash
+  npm run deploy
+  ```

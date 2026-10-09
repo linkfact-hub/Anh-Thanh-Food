@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800;900&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ── Tiệm Anh Thanh - PAT-FOOD Warm Amber & Sunset Orange Palette ── */
+  /* Tham chiếu màu chữ TIỆM ANH THANH, nút ĐẶT MÓN NGAY, đĩa PAT-FOOD & trà sữa hoàng kim */
+  --color-brand-50:  #fff8f0;   /* Kem sữa cam cực nhạt */
+  --color-brand-100: #ffedd5;   /* Kem hổ phách sáng */
+  --color-brand-200: #fed7aa;   /* Cam mơ dịu */
+  --color-brand-300: #fdba74;   /* Cam vàng tươi */
+  --color-brand-400: #fb923c;   /* Cam sáng nổi bật */
+  --color-brand-500: #f97316;   /* Cam thương hiệu chính (Màu nút Đặt Món Ngay & logo) */
+  --color-brand-600: #ea580c;   /* Cam đậm nhấn mạnh (Màu đĩa PAT-FOOD) */
+  --color-brand-700: #c2410c;   /* Cam cháy đậm */
+
+  /* ── Tangerine / Coral Red Accent (Thay thế Hot Pink) ── */
+  --color-pink-300:  #fca5a5;
+  --color-pink-400:  #f87171;
+  --color-pink-500:  #e11d48;   /* Đỏ tươi / Đỏ dưa hấu nhấn giá khuyến mãi & badge */
+  --color-pink-600:  #be123c;
+
+  /* ── Warm Cream / Milk Ivory (Thay thế Lavender tím) ── */
+  --color-lavender-50:  #fffbf5;   /* Nền kem bơ ấm áp cho card/tag */
+  --color-lavender-100: #fef3c7;   /* Kem hoàng kim nhạt */
+  --color-lavender-200: #fde68a;   /* Vàng caramel nhạt */
+
+  /* ── Backgrounds (ấm áp, sạch sẽ, kích thích vị giác) ── */
+  --color-bg-base:    #faf6f0;   /* Nền ngà ấm dịu mắt */
+  --color-bg-card:    #ffffff;
+  --color-bg-surface: #fff8f0;
+
+  /* ── Text (Nâu cà phê đậm & Mocha ấm, chuẩn ẩm thực) ── */
+  --color-text-dark:  #291b12;   /* Nâu espresso đậm rõ nét */
+  --color-text-mid:   #6c472d;   /* Nâu mocha đậm đà */
+  --color-text-soft:  #9c8273;   /* Nâu be xám thanh lịch */
+
+  /* ── Uniform Blue Accent (Màu đồng phục xanh Anh Thanh) ── */
+  --color-uniform-blue: #2563eb;
+  --color-uniform-dark: #1e3a8a;
+
+  /* ── Typography ── */
+  --font-display: "Baloo 2", cursive;
+  --font-body:    "Nunito", sans-serif;
+}
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+}
+
+/* ── Bubbly gradient background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 0%,   rgba(249,115,22,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 90% 15%,  rgba(234,88,12,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 50% 100%, rgba(245,158,11,0.05) 0%, transparent 70%),
+    #faf6f0;
+  pointer-events: none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-brand-100); }
+::-webkit-scrollbar-thumb {
+  background: rgba(249,115,22,0.35);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand-500); }
+
+/* ── Text gradient util ── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-brand-600), #e11d48);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Scrollbar hide utility ── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Custom scrollbar in modals ── */
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(249,115,22,0.3);
+  border-radius: 4px;
+}
+
+/* ── Floating bubbles decoration ── */
+@keyframes float-bubble {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+  50%       { transform: translateY(-12px) scale(1.05); opacity: 0.9; }
+}
+.bubble-float { animation: float-bubble 3s ease-in-out infinite; }
