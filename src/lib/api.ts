@@ -15,6 +15,28 @@ async function postToGAS(payload: object) {
   return res.json();
 }
 
+// ── CACHE DATA STORAGE ──────────────────────────────────────
+const STORE_CACHE_KEY = 'pat_store_cache_v2';
+
+export function getCachedStoreData(): {
+  cuaHang?: typeof demoStoreInfo;
+  sanPham?: typeof demoProducts;
+  shopee?: typeof demoShopee;
+  suKien?: typeof demoPromos;
+} | null {
+  try {
+    const raw = localStorage.getItem(STORE_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && Array.isArray(parsed.sanPham) && parsed.sanPham.length > 0) {
+      return parsed;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 // ── LOAD DỮ LIỆU BAN ĐẦU ────────────────────────────────────
 export async function loadStoreData() {
   if (DEMO_MODE || !APPS_SCRIPT_URL) {
@@ -57,11 +79,27 @@ export async function loadStoreData() {
           ch['Mascot URL'] = `${import.meta.env.BASE_URL}Logo.png`;
         }
       }
+
+      // Lưu lại cache mới nhất để các lần truy cập sau hiển thị tức thì (0ms)
+      try {
+        localStorage.setItem(STORE_CACHE_KEY, JSON.stringify({
+          cuaHang: data.cuaHang,
+          sanPham: data.sanPham,
+          shopee:  data.shopee,
+          suKien:  data.suKien,
+          cachedAt: Date.now()
+        }));
+      } catch {
+        // Bỏ qua nếu localStorage đầy
+      }
+
       return data;
     }
     throw new Error(data.error);
   } catch {
-    // Fallback về demo nếu lỗi hoặc timeout
+    // Fallback: Ưu tiên cache đã lưu trước, nếu không có mới dùng demo
+    const cached = getCachedStoreData();
+    if (cached) return cached;
     return {
       cuaHang: demoStoreInfo,
       sanPham: demoProducts,

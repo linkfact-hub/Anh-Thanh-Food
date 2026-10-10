@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { loadStoreData } from './lib/api';
+import { loadStoreData, getCachedStoreData } from './lib/api';
 import { StoreInfo, Product, Promo, ShopeeItem } from './types';
 import { demoStoreInfo, demoProducts, demoPromos, demoShopee } from './data';
 import { useStore } from './store';
@@ -26,12 +26,13 @@ export default function App() {
   const [isMemberOpen, setIsMemberOpen] = useState(false);
   const { setMember, searchQuery } = useStore();
 
-  // State dữ liệu thật từ Google Sheets
-  const [storeInfo, setStoreInfo] = useState<StoreInfo>(demoStoreInfo);
-  const [products, setProducts]   = useState<Product[]>(demoProducts);
-  const [promos, setPromos]       = useState<Promo[]>(demoPromos);
-  const [shopeeItems, setShopee]  = useState<ShopeeItem[]>(demoShopee);
-  const [loading, setLoading]     = useState(true);
+  // Khởi tạo ngay từ Local Cache để hiển thị tức thì 0ms, không bị hiện dữ liệu cũ
+  const cached = getCachedStoreData();
+  const [storeInfo, setStoreInfo] = useState<StoreInfo>((cached?.cuaHang as StoreInfo) || demoStoreInfo);
+  const [products, setProducts]   = useState<Product[]>((cached?.sanPham as Product[]) || demoProducts);
+  const [promos, setPromos]       = useState<Promo[]>((cached?.suKien as Promo[]) || demoPromos);
+  const [shopeeItems, setShopee]  = useState<ShopeeItem[]>((cached?.shopee as ShopeeItem[]) || demoShopee);
+  const [loading, setLoading]     = useState(!cached);
 
   // 1. Restore member từ localStorage
   useEffect(() => {
@@ -48,10 +49,10 @@ export default function App() {
   // 2. Load dữ liệu từ Apps Script / Google Sheets
   useEffect(() => {
     loadStoreData().then(data => {
-      setStoreInfo(data.cuaHang as StoreInfo);
-      setProducts(data.sanPham as Product[]);
-      setPromos(data.suKien as Promo[]);
-      setShopee(data.shopee as ShopeeItem[]);
+      if (data?.cuaHang) setStoreInfo(data.cuaHang as StoreInfo);
+      if (data?.sanPham) setProducts(data.sanPham as Product[]);
+      if (data?.suKien) setPromos(data.suKien as Promo[]);
+      if (data?.shopee) setShopee(data.shopee as ShopeeItem[]);
       setLoading(false);
     });
   }, []);
@@ -71,6 +72,7 @@ export default function App() {
           products={products}
           onOpenProduct={setSelectedProduct}
           searchQuery={searchQuery}
+          isLoading={loading}
         />
         <ShopeeList items={shopeeItems} storeInfo={storeInfo} />
         <StoreMap storeInfo={storeInfo} />

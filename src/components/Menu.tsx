@@ -6,6 +6,25 @@ interface MenuProps {
   products: Product[];
   onOpenProduct: (product: Product) => void;
   searchQuery: string;
+  isLoading?: boolean;
+}
+
+function MenuSkeleton() {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 animate-pulse">
+      {Array.from({ length: 8 }).map((_, idx) => (
+        <div key={idx} className="bg-white rounded-2xl p-3 sm:p-4 border border-brand-100/60 shadow-sm flex flex-col">
+          <div className="w-full aspect-square bg-slate-100 rounded-xl mb-3" />
+          <div className="h-4 bg-slate-100 rounded-md w-3/4 mb-2" />
+          <div className="h-3 bg-slate-100 rounded-md w-1/2 mb-4" />
+          <div className="mt-auto flex justify-between items-center pt-2">
+            <div className="h-5 bg-slate-100 rounded-md w-1/3" />
+            <div className="w-8 h-8 rounded-full bg-slate-100" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function getProductRating(id: string): number {
@@ -14,7 +33,7 @@ function getProductRating(id: string): number {
   return Number((4.6 + (Math.abs(hash) % 4) * 0.1).toFixed(1));
 }
 
-export default function Menu({ products, onOpenProduct, searchQuery }: MenuProps) {
+export default function Menu({ products, onOpenProduct, searchQuery, isLoading }: MenuProps) {
   const [activeTab, setActiveTab] = useState('Tất cả');
 
   const categories = useMemo(() => {
@@ -60,9 +79,11 @@ export default function Menu({ products, onOpenProduct, searchQuery }: MenuProps
       </div>
 
       {/* Grid */}
-      {filteredProducts.length === 0 ? (
+      {isLoading && products.length === 0 ? (
+        <MenuSkeleton />
+      ) : filteredProducts.length === 0 ? (
         <div className="py-24 text-center text-text-soft">
-          <p className="text-5xl mb-4"></p>
+          <p className="text-5xl mb-4">🍽️</p>
           <p className="font-display text-xl text-brand-400">Không tìm thấy món nào!</p>
         </div>
       ) : (
